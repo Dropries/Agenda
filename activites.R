@@ -35,6 +35,10 @@ formated <- read.table(csv_files, sep = "\t", header = T) %>%
     reframe(prop = round(sum(duree) / sum, conf$precision)) %>% distinct%>%
   rename(Jour=day_debut,Activité=event,Temps=prop)
 
+
+# Remplissage par activité
+formated %>% spread(Jour,Temps) %>% View
+
 # Remplissage par jour
 formated %>%
     split(.$Jour)
