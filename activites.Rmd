@@ -1,9 +1,20 @@
+---
+title: "Suivi d'activité"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 library(tidyr)
 library(dplyr)
 library(lubridate)
 library(stringr)
 library(yaml)
+```
 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 conf<-read_yaml("config.yaml")
 
 csv_files<-list.files(pattern=".csv")
@@ -34,14 +45,19 @@ formated <- read.table(csv_files, sep = "\t", header = T) %>%
     group_by(day_debut, event) %>%
     reframe(prop = round(sum(duree) / sum, conf$precision)) %>% distinct%>%
   rename(Jour=day_debut,Activité=event,Temps=prop)
-
+```
 
 # Remplissage par activité
-formated %>% spread(Jour,Temps) %>% View
-
+```{r echo=FALSE}
+formated %>% spread(Jour,Temps) %>% as_tibble()%>%knitr::kable()
+```
 # Remplissage par jour
+```{r echo=FALSE}
 formated %>%
     split(.$Jour)
+```
 
 # Comparaison avec les objectifs
+```{r echo=FALSE}
 formated %>% group_by(Activité) %>% summarise('Temps total' = sum(Temps))
+```
