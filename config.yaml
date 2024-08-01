@@ -1,3 +1,3 @@
-date_de_debut: "2024-05-01"
-date_de_fin: "2024-05-31"
+date_de_debut: !expr floor_date(today(), 'month')
+date_de_fin: !expr ceiling_date(today(), 'month')
 precision: 2 #chiffres après la virgule
